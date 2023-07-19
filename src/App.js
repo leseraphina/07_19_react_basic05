@@ -1,25 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+import ProductList from "./components/ProductList_1";
+import data from './data.json';
+import './App.css'
+import { useState } from "react";
+function Option({etc,sortItems}){
+  const etcChange = (e) => {
+    return sortItems(e.target.value);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <select
+     defaultValue={etc}
+     onChange={etcChange}>
+      <option value="necklaces">necklaces</option>
+      <option value="earrings">earrings</option>
+    </select>
+  )
+}
+
+export default function App(){
+const [etc,setEtc] = useState('');
+const [items,setItems] = useState(data);
+//  변수 만들기
+let subData = data;
+console.log(subData);
+ 
+const sortItems = (a) =>{
+  console.log(a)
+  const newItem = subData.filter((item) => {return item.kind === a});
+  console.log(newItem);
+  setEtc(a);
+  setItems(newItem)
+}
+
+const DelectItem = (id) => {
+// 새로운 배열
+const newItem = items.filter((item) => item.id !== id)
+setItems(newItem);
+
+}
+  return (
+    <div id="wrap">
+      <div className="btn">
+        <Option etc={etc} sortItems={sortItems} />
+      </div>
+      <ProductList 
+      items={items} 
+      onDelete = {DelectItem} />
     </div>
   );
 }
 
-export default App;
+
+// 16 - 26
